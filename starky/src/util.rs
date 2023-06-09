@@ -16,3 +16,11 @@ pub fn trace_rows_to_poly_values<F: Field, const COLUMNS: usize>(
         .map(|column| PolynomialValues::new(column))
         .collect()
 }
+
+pub fn to_u32_array_be<const N: usize>(block: [u8; N * 4]) -> [u32; N] {
+    let mut block_u32 = [0; N];
+    for (o, chunk) in block_u32.iter_mut().zip(block.chunks_exact(4)) {
+        *o = u32::from_be_bytes(chunk.try_into().unwrap());
+    }
+    block_u32
+}
